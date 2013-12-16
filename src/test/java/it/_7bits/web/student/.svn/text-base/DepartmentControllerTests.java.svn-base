@@ -1,0 +1,27 @@
+package it._7bits.web.student;
+
+import it._7bits.web.student.domain.Department;
+import it._7bits.web.student.service.impl.DepartmentServiceImpl;
+import it._7bits.web.student.web.controller.DepartmentController;
+import junit.framework.TestCase;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Test for Department Controller
+ */
+public class DepartmentControllerTests extends TestCase {
+
+    public void testHandleRequestView() throws Exception {
+        DepartmentController controller = new DepartmentController();
+        controller.setDepartmentService(new DepartmentServiceImpl());
+        ModelAndView modelAndView = controller.departmentView ( null);
+        assertEquals ("department/view", modelAndView.getViewName());
+        assertNotNull (modelAndView.getModel());
+        Map<String,Object> modelMap = modelAndView.getModel();
+        List<Department> departmentsValue = (List<Department>) modelMap.get("departments");
+        assertNotNull(departmentsValue);
+    }
+}

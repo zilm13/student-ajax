@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/controller
+END
+AjaxController.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/controller/AjaxController.java
+END
+DepartmentController.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/controller/DepartmentController.java
+END
+StudentController.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/controller/StudentController.java
+END
+GroupController.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/controller/GroupController.java
+END
+SubDepartmentController.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/controller/SubDepartmentController.java
+END

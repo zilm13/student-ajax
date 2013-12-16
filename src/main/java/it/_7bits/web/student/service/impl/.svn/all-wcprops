@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/service/impl
+END
+StudentServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/service/impl/StudentServiceImpl.java
+END
+GroupServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/service/impl/GroupServiceImpl.java
+END
+SubDepartmentServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/service/impl/SubDepartmentServiceImpl.java
+END
+DepartmentServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/service/impl/DepartmentServiceImpl.java
+END
+DefaultValuesServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/service/impl/DefaultValuesServiceImpl.java
+END

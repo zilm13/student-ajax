@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/dao/hibernate/entity
+END
+GroupEntity.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/dao/hibernate/entity/GroupEntity.java
+END
+SubDepartmentEntity.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/dao/hibernate/entity/SubDepartmentEntity.java
+END
+DepartmentEntity.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/dao/hibernate/entity/DepartmentEntity.java
+END
+StudentEntity.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/dao/hibernate/entity/StudentEntity.java
+END

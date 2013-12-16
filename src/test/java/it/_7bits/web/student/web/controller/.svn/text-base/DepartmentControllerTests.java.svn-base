@@ -1,0 +1,83 @@
+package it._7bits.web.student.web.controller;
+
+import it._7bits.web.student.domain.Cookah;
+import it._7bits.web.student.domain.Department;
+import it._7bits.web.student.service.IDefaultValuesService;
+import it._7bits.web.student.service.IDepartmentService;
+import it._7bits.web.student.service.ServiceGeneralException;
+import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+/**
+ * Tests for Department Controller
+ */
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+public class DepartmentControllerTests extends TestCase {
+
+    private List<Department> departmentList;
+
+    MockMvc mockMvc;
+    /*
+    @Autowired
+    WebApplicationContext wac;
+    @Autowired
+    private  MockHttpServletRequest request;
+    @Autowired
+    private MockHttpSession session;
+    */
+    private Cookah cookah;
+    @Mock
+    private IDefaultValuesService defaultValuesService;
+    @InjectMocks
+    DepartmentController controller;
+    @Mock
+    IDepartmentService departmentService;
+
+
+
+    @Before
+    public void setUp () throws ServiceGeneralException{
+        departmentList = new ArrayList<Department>();
+        Department department1 = new Department();
+        department1.setId(1L);
+        department1.setDepartmentName("Математический");
+        department1.setDeanFirstName("Андрей");
+        department1.setDeanLastName("Иванов");
+        departmentList.add(department1);
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        when(departmentService.findAllDepartments()).thenReturn(departmentList);
+        when(defaultValuesService.getBaseUrl()).thenReturn("http://test.com");
+        when(defaultValuesService.getDepartmentReturnUri()).thenReturn("/department/view");
+        //session = new MockHttpSession ();
+        cookah = new Cookah();
+        cookah.setReturnPath ("http://test.com/department/view");
+        cookah.setReturnUri ("/department/view");
+        controller.setCookah (cookah);
+    }
+
+    @Test
+    public void testDepartmentView() throws Exception {
+        mockMvc.perform (get("/department/view")
+        .accept (MediaType.TEXT_HTML))
+        .andExpect (status().isOk())
+        .andExpect (view().name ("department/view"))
+        .andExpect (model().attribute("departments", departmentList))
+                .andExpect (model().attributeExists ("cookah"))
+                .andExpect (model().attribute("cookah", cookah));
+    }
+}

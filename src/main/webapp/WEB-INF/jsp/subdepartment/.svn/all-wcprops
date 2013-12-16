@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/webapp/WEB-INF/jsp/subdepartment
+END
+delete.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/webapp/WEB-INF/jsp/subdepartment/delete.jsp
+END
+edit.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/webapp/WEB-INF/jsp/subdepartment/edit.jsp
+END
+add.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/webapp/WEB-INF/jsp/subdepartment/add.jsp
+END
+view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/webapp/WEB-INF/jsp/subdepartment/view.jsp
+END

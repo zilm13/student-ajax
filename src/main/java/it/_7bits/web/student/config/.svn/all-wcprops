@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config
+END
+ServiceConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config/ServiceConfig.java
+END
+DaoConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config/DaoConfig.java
+END
+DefaultValuesConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config/DefaultValuesConfig.java
+END
+WebAppInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config/WebAppInitializer.java
+END
+HibernateJpaConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/training-2013-2014-1/!svn/ver/137/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config/HibernateJpaConfig.java
+END
+WebConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/config/WebConfig.java
+END

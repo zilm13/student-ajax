@@ -1,0 +1,7 @@
+<Context>
+<Resource name="jdbc/MyDS" auth="Container"
+          type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://127.0.0.1:3306/students?useUnicode=true&amp;characterEncoding=utf-8"
+          username="students" password="studentspass"/>
+    <ResourceLink global="jdbc/MyDS" name="jdbc/MyDS" type="javax.sql.DataSource" />
+</Context>

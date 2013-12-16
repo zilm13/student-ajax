@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/training-2013-2014-1/!svn/ver/136/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator
+END
+DepartmentEditValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/DepartmentEditValidator.java
+END
+StudentDeleteValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/training-2013-2014-1/!svn/ver/135/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/StudentDeleteValidator.java
+END
+StudentEditValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/training-2013-2014-1/!svn/ver/135/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/StudentEditValidator.java
+END
+GroupDeleteValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/GroupDeleteValidator.java
+END
+StudentAddValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/training-2013-2014-1/!svn/ver/135/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/StudentAddValidator.java
+END
+SubDepartmentDeleteValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/SubDepartmentDeleteValidator.java
+END
+GroupEditValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/GroupEditValidator.java
+END
+SubDepartmentEditValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/SubDepartmentEditValidator.java
+END
+DepartmentDeleteValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/training-2013-2014-1/!svn/ver/134/dshmatko/student-ajax/trunk/src/main/java/it/_7bits/web/student/web/validator/DepartmentDeleteValidator.java
+END
