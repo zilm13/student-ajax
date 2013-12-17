@@ -21,6 +21,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Tests for Department Controller
  */
 public class DepartmentControllerTests extends TestCase {
+
+    MockMvc mockMvc;
+
+    private Cookah cookah;
+    @Mock
+    private IDefaultValuesService defaultValuesService;
+    @InjectMocks
+    DepartmentController controller;
+    @Mock
+    IDepartmentService departmentService;
+    @Mock
+    MessageSource messageSource;
+    @Mock
+    DepartmentEditValidator departmentEditValidator;
+    @Mock
+    DepartmentDeleteValidator departmentDeleteValidator;
 
     final static String BASE_URL = "http://test.com";
     final static String DEPARTMENT_VIEW_URI = "/department/view";
@@ -62,38 +79,16 @@ public class DepartmentControllerTests extends TestCase {
     final static String DEPARTMENT_DELETE_URI_FAIL = "/department/delete/2";
     final static String DEPARTMENT_DELETE_URI_SUCCESS = "/department/delete/1";
     final static String DEPARTMENT_DELETE_VIEW_NAME = "department/delete";
+    final static String DEPARTMENT_DELETE_FAIL_PARAM_ID = "222";
     final static String DEPARTMENT_DELETE_PARAM_ID = "1";
 
     protected final Logger LOG = Logger.getLogger(getClass());
 
     private List<Department> departmentList;
 
-    MockMvc mockMvc;
-    /*
-    @Autowired
-    WebApplicationContext wac;
-    @Autowired
-    private  MockHttpServletRequest request;
-    @Autowired
-    private MockHttpSession session;
-    */
-    private Cookah cookah;
-    @Mock
-    private IDefaultValuesService defaultValuesService;
-    @InjectMocks
-    DepartmentController controller;
-    @Mock
-    IDepartmentService departmentService;
-    @Mock
-    MessageSource messageSource;
-    @Mock
-    DepartmentEditValidator departmentEditValidator;
-    @Mock
-    DepartmentDeleteValidator departmentDeleteValidator;
-
-
     /**
      * Initial setup take place here
+     * All Mocks setup here
      * @throws Exception if smth fails
      */
     @Before
@@ -110,9 +105,18 @@ public class DepartmentControllerTests extends TestCase {
         department1.setDeanLastName(DEPARTMENT1_DEAN_LASTNAME);
         departmentList.add(department1);
 
+        cookah = new Cookah();
+        cookah.setReturnPath (BASE_URL + DEPARTMENT_VIEW_URI);
+        cookah.setReturnUri (DEPARTMENT_VIEW_URI);
+        controller.setCookah (cookah);
+
+        //
         // Mocks setup
+        //
         when(departmentService.findAllDepartments())
                 .thenReturn(departmentList);
+
+        // Only one department can be found by DepartmentService
         doAnswer(new Answer<Department>() {
             public Department answer(InvocationOnMock invocation) {
                 Object[] args = invocation.getArguments();
@@ -127,26 +131,51 @@ public class DepartmentControllerTests extends TestCase {
             }
         }).when(departmentService).
                 findDepartmentById(anyLong());
+
         doNothing()
                 .when (departmentService)
-                .addDepartment(any(Department.class));
-        doNothing()
-                .when(departmentService)
                 .addDepartment(any(Department.class));
         when (defaultValuesService.getBaseUrl()).
                 thenReturn(BASE_URL);
         when (defaultValuesService. getDepartmentReturnUri()).
                 thenReturn(DEPARTMENT_VIEW_URI);
-        doNothing()
-                .when(departmentEditValidator).validate(anyObject(), any(org.springframework.validation.Errors.class));
-        doNothing()
-                .when(departmentDeleteValidator).validate(anyObject(), any(org.springframework.validation.Errors.class));
 
-        //session = new MockHttpSession ();
-        cookah = new Cookah();
-        cookah.setReturnPath (BASE_URL + DEPARTMENT_VIEW_URI);
-        cookah.setReturnUri (DEPARTMENT_VIEW_URI);
-        controller.setCookah (cookah);
+        // Department Edit Validator Mock
+        // Checks only departmentName, rejects if empty
+        doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                LOG.debug ("DepartmentEditValidatorTest: " + args[0]);
+                DepartmentForm departmentForm = (DepartmentForm) args[0];
+                LOG.debug ("DepartmentEditValidatorTest: " + departmentForm);
+                LOG.debug ("DepartmentEditValidatorTest id:" + departmentForm.getId());
+                BindingResult bindingResult = (BindingResult) args[1];
+                if (!departmentForm.getDepartmentName().isEmpty()) {
+                    LOG.debug ("DepartmentEditValidatorTest: Not rejecting");
+                    return null;
+                } else {
+                    LOG.debug ("DepartmentEditValidatorTest: Rejecting");
+                    bindingResult.rejectValue("departmentName","Test reject if id is not 1");
+                    return null;
+                }
+            }
+        }).when(departmentEditValidator).validate(anyObject(), any(org.springframework.validation.Errors.class));
+
+        // Department Delete Validator Mock
+        // Checks if department not null, otherwise throw ServiceGeneralException
+        doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) throws Exception {
+                Object[] args = invocation.getArguments();
+                Department department = (Department) args[0];
+                if (department != null) {
+                    LOG.debug ("DepartmentDelete: Not rejecting");
+                    return null;
+                } else {
+                    LOG.debug ("DepartmentDelete: Rejecting");
+                    throw new ServiceGeneralException("",new Exception());
+                }
+            }
+        }).when(departmentService).deleteDepartment(any(Department.class));
     }
 
     /**
@@ -172,8 +201,8 @@ public class DepartmentControllerTests extends TestCase {
     @Test
     public void testDepartmentAddGet() throws Exception {
 
-        mockMvc.perform (get(DEPARTMENT_ADD_URI)
-        .accept (MediaType.TEXT_HTML))
+        mockMvc.perform(get(DEPARTMENT_ADD_URI)
+                .accept(MediaType.TEXT_HTML))
                 .andExpect(status().isOk())
                 .andExpect (view().name(DEPARTMENT_ADD_VIEW_NAME))
                 .andExpect (model().attributeExists(ATTRIBUTE_DEPARTMENT_FORM))
@@ -188,9 +217,9 @@ public class DepartmentControllerTests extends TestCase {
     @Test
     public void testDepartmentAddPostFail() throws Exception {
 
-        mockMvc.perform (post(DEPARTMENT_ADD_URI)
-                .contentType (MediaType.APPLICATION_FORM_URLENCODED)
-                .param (PARAM_NAME_DEPARTMENT_NAME,""))
+        mockMvc.perform(post(DEPARTMENT_ADD_URI)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param(PARAM_NAME_DEPARTMENT_NAME, ""))
                 .andExpect (status().isOk())
                 .andExpect (view().name(DEPARTMENT_ADD_VIEW_NAME))
         .andExpect(model().attributeHasErrors(ATTRIBUTE_DEPARTMENT_FORM));
@@ -223,7 +252,7 @@ public class DepartmentControllerTests extends TestCase {
 
         mockMvc.perform (get(DEPARTMENT_EDIT_URI_FAIL)
                 .accept(MediaType.TEXT_HTML))
-                .andExpect (status().isOk())
+                .andExpect(status().isOk())
                 .andExpect (view().name(DEPARTMENT_EDIT_VIEW_NAME))
                 .andExpect (model().attributeDoesNotExist(ATTRIBUTE_DEPARTMENT_FORM));
     }
@@ -244,20 +273,38 @@ public class DepartmentControllerTests extends TestCase {
     }
 
     /**
-     * Testing if "department edit" controller works fine with POST method without validating
+     * Testing if "department edit" controller fails fine with POST method if id not exits 
+     * @throws Exception if smth. fails
+     */
+    @Test
+    public void testDepartmentEditPostFail() throws Exception {
+
+        mockMvc.perform(post(DEPARTMENT_EDIT_URI_SUCCESS)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param(PARAM_NAME_DEPARTMENT_ID, DEPARTMENT_EDIT_PARAM_ID)
+                .param(PARAM_NAME_DEPARTMENT_NAME, "")
+                .param(PARAM_NAME_DEAN_FIRSTNAME, DEPARTMENT_EDIT_PARAM_DEAN_NAME)
+                .param(PARAM_NAME_DEAN_LASTNAME, DEPARTMENT_EDIT_PARAM_DEAN_LASTNAME))
+                .andExpect (view().name(DEPARTMENT_EDIT_VIEW_NAME))
+                .andExpect(status().isOk());
+
+    }
+
+    /**
+     * Testing if "department edit" controller works fine with POST method
      * @throws Exception if smth. fails
      */
     @Test
     public void testDepartmentEditPostSuccess() throws Exception {
 
         mockMvc.perform(post(DEPARTMENT_EDIT_URI_SUCCESS)
-                .contentType (MediaType.APPLICATION_FORM_URLENCODED)
-                .param (PARAM_NAME_DEPARTMENT_ID, DEPARTMENT_EDIT_PARAM_ID)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param(PARAM_NAME_DEPARTMENT_ID, DEPARTMENT_EDIT_PARAM_ID)
                 .param(PARAM_NAME_DEPARTMENT_NAME, DEPARTMENT_EDIT_PARAM_NAME)
-                .param (PARAM_NAME_DEAN_FIRSTNAME, DEPARTMENT_EDIT_PARAM_DEAN_NAME)
-                .param (PARAM_NAME_DEAN_LASTNAME, DEPARTMENT_EDIT_PARAM_DEAN_LASTNAME))
+                .param(PARAM_NAME_DEAN_FIRSTNAME, DEPARTMENT_EDIT_PARAM_DEAN_NAME)
+                .param(PARAM_NAME_DEAN_LASTNAME, DEPARTMENT_EDIT_PARAM_DEAN_LASTNAME))
                 .andExpect(status().isMovedTemporarily())
-                .andExpect (view().name("redirect:" + BASE_URL + DEPARTMENT_VIEW_URI));
+                .andExpect(view().name("redirect:" + BASE_URL + DEPARTMENT_VIEW_URI));
     }
 
     /**
@@ -290,15 +337,30 @@ public class DepartmentControllerTests extends TestCase {
     }
 
     /**
-     * Resting if "department delete" works fine with POST method without validating
+     * Testing if "department delete" fails correctly with POST method if id not exists
+     * @throws Exception if smth. fails
+     */
+    @Test
+    public void testDepartmentDeletePostFail() throws Exception {
+
+        mockMvc.perform(post(DEPARTMENT_DELETE_URI_SUCCESS)
+                .contentType (MediaType.APPLICATION_FORM_URLENCODED)
+                .param (PARAM_NAME_DEPARTMENT_ID, DEPARTMENT_DELETE_FAIL_PARAM_ID))
+                .andExpect(status().isMovedTemporarily())
+                .andExpect(view().name("redirect:" + BASE_URL + DEPARTMENT_VIEW_URI));
+    }
+
+    /**
+     * Testing if "department delete" works fine with POST method
      * @throws Exception if smth. fails
      */
     @Test
     public void testDepartmentDeletePostSuccess() throws Exception {
 
         mockMvc.perform(post(DEPARTMENT_DELETE_URI_SUCCESS)
-                .contentType (MediaType.APPLICATION_FORM_URLENCODED)
-                .param (PARAM_NAME_DEPARTMENT_ID, DEPARTMENT_DELETE_PARAM_ID))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param(PARAM_NAME_DEPARTMENT_ID, DEPARTMENT_DELETE_PARAM_ID))
                 .andExpect(status().isMovedTemporarily())
                 .andExpect(view().name("redirect:" + BASE_URL + DEPARTMENT_VIEW_URI));
-    } }
+    } 
+}

@@ -1,0 +1,1 @@
+Simple Java (Spring) application for maintaining students, departments, group and subdepartments
