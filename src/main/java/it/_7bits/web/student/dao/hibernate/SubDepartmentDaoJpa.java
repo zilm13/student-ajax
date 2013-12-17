@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +34,14 @@ public class SubDepartmentDaoJpa implements ISubDepartmentDao {
     @Override
     public List<SubDepartment> findAll() throws DaoGeneralException {
         try {
-            return (List<SubDepartment>)entityManager.
+            List<SubDepartmentEntity> entityList = entityManager.
                     createQuery("from " + entityClass.getName(), entityClass)
                     .getResultList();
+            List<SubDepartment> pojoList = new ArrayList<SubDepartment>();
+            for (SubDepartmentEntity entity: entityList) {
+                pojoList.add (new SubDepartment (entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list all subdepartments via JPA: ", e);
         }
@@ -63,7 +69,12 @@ public class SubDepartmentDaoJpa implements ISubDepartmentDao {
                     typedQuery.setParameter (parameter.getKey(), parameter.getValue());
                 }
             }
-            return (List<SubDepartment>)(List<?>) typedQuery.getResultList();
+            List<SubDepartmentEntity> entityList = typedQuery.getResultList();
+            List<SubDepartment> pojoList = new ArrayList<SubDepartment>();
+            for (SubDepartmentEntity entity: entityList) {
+                pojoList.add (new SubDepartment (entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list subdepartments with custom query via JPA: ", e);
         }
@@ -81,8 +92,8 @@ public class SubDepartmentDaoJpa implements ISubDepartmentDao {
     public SubDepartment findById(Long id) throws DaoGeneralException {
         if (id == null) return null;
         try {
-
-            return (SubDepartment) entityManager.find(entityClass, id);
+            SubDepartmentEntity entity = (SubDepartmentEntity) entityManager.find(entityClass, id);
+            return new SubDepartment (entity);
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot get subdepartment by Id via JPA: ", e);
         }

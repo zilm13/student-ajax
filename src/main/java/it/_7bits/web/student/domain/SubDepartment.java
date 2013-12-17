@@ -10,6 +10,14 @@ public class SubDepartment implements Serializable {
     private String subDepartmentName;
     private Department department;
 
+    public SubDepartment() {}
+
+    public SubDepartment (SubDepartment subDepartment) {
+        this.id = subDepartment.getId();
+        this.subDepartmentName = subDepartment.getSubDepartmentName();
+        this.department = subDepartment.getDepartment();
+    }
+
     public Long getId() {
         return id;
     }

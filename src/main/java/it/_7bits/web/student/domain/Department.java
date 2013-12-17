@@ -13,6 +13,15 @@ public class Department implements Serializable {
     private String deanFirstName;
     private String deanLastName;
 
+    public Department() {}
+
+    public Department (Department department) {
+        this.id = department.getId();
+        this.departmentName = department.getDepartmentName();
+        this.deanFirstName = department.getDeanFirstName();
+        this.deanLastName = department.getDeanLastName();
+    }
+
     public Long getId() {
         return id;
     }

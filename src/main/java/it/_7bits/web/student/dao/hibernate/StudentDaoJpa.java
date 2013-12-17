@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +34,14 @@ public class StudentDaoJpa implements IStudentDao {
     @Override
     public List<Student> findAll() throws DaoGeneralException {
         try {
-            return (List<Student>)entityManager.
+            List<StudentEntity> entityList = entityManager.
                     createQuery("from " + entityClass.getName(), entityClass)
                     .getResultList();
+            List<Student> pojoList = new ArrayList<Student>();
+            for (StudentEntity entity:entityList) {
+                pojoList.add (new Student(entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list all students via JPA: ", e);
         }
@@ -62,7 +68,12 @@ public class StudentDaoJpa implements IStudentDao {
                     typedQuery.setParameter (parameter.getKey(), parameter.getValue());
                 }
             }
-            return (List<Student>)(List<?>) typedQuery.getResultList();
+            List<StudentEntity> entityList = typedQuery.getResultList();
+            List<Student> pojoList = new ArrayList<Student>();
+            for (StudentEntity entity : entityList) {
+                pojoList.add (new Student(entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list students with custom query via JPA: ", e);
         }
@@ -80,8 +91,8 @@ public class StudentDaoJpa implements IStudentDao {
     public Student findById(Long id) throws DaoGeneralException {
         if (id == null) return null;
         try {
-
-            return (Student) entityManager.find(entityClass, id);
+            StudentEntity entity = (StudentEntity)entityManager.find(entityClass, id);
+            return new Student(entity) ;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot get student by Id via JPA: ", e);
         }

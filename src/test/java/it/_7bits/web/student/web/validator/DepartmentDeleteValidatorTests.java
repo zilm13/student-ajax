@@ -1,5 +1,6 @@
 package it._7bits.web.student.web.validator;
 
+
 import it._7bits.web.student.domain.Department;
 import it._7bits.web.student.service.IDepartmentService;
 import it._7bits.web.student.web.form.DepartmentForm;
@@ -14,14 +15,16 @@ import org.mockito.stubbing.Answer;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.doAnswer;
+
 /**
- * DepartmentEditValidator Tests
+ * DepartmentDeleteValidator Tests
  */
-public class DepartmentEditValidatorTests {
+public class DepartmentDeleteValidatorTests {
 
     @InjectMocks
-    DepartmentEditValidator departmentEditValidator;
+    DepartmentDeleteValidator departmentDeleteValidator;
     @Mock
     IDepartmentService departmentService;
 
@@ -30,13 +33,14 @@ public class DepartmentEditValidatorTests {
     final static String DEPARTMENT1_DEAN_NAME = "Андрей";
     final static String DEPARTMENT1_DEAN_LASTNAME = "Иванов";
     final static Long DEPARTMENT_SUCCESS_ID = 1L;
+    final static Long DEPARTMENT_NULL_ID = null;
+    final static Long DEPARTMENT_FAIL_ID = 2L;
     final static String DEPARTMENT_SUCCESS_NAME = "Математический";
     final static String DEPARTMENT_SUCCESS_DEAN_NAME = "Андрей";
     final static String DEPARTMENT_SUCCESS_DEAN_LASTNAME = "Иванов";
-    final static Long DEPARTMENT_FAIL_ID = 2L;
-    final static String DEPARTMENT_FAIL_NAME = "";
-    final static String DEPARTMENT_FAIL_DEAN_NAME = "";
-    final static String DEPARTMENT_FAIL_DEAN_LASTNAME = "";
+    final static String DEPARTMENT_SUCCESS_EMPTY_NAME = "";
+    final static String DEPARTMENT_SUCCESS_EMPTY_DEAN_NAME = "";
+    final static String DEPARTMENT_SUCCESS_EMPTY_DEAN_LASTNAME = "";
     final static String DEPARTMENT_MODEL_NAME = "departmentForm";
     protected final Logger LOG = Logger.getLogger(getClass());
 
@@ -48,7 +52,7 @@ public class DepartmentEditValidatorTests {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        departmentEditValidator.setDepartmentService (departmentService);
+        departmentDeleteValidator.setDepartmentService (departmentService);
         final Department department1 = new Department();
         department1.setId(DEPARTMENT1_ID);
         department1.setDepartmentName(DEPARTMENT1_NAME);
@@ -73,82 +77,66 @@ public class DepartmentEditValidatorTests {
     }
 
     /**
-     * Test if DepartmentEditValidator not fails on correct input
+     * Test if DepartmentDeleteValidator not fails on correct input
      */
     @Test
-    public void departmentEditValidatorSuccess() {
+    public void departmentDeleteValidatorSuccess() {
         DepartmentForm departmentForm =  new DepartmentForm();
         departmentForm.setId( DEPARTMENT_SUCCESS_ID);
         departmentForm.setDepartmentName (DEPARTMENT_SUCCESS_NAME);
         departmentForm.setDeanFirstName (DEPARTMENT_SUCCESS_DEAN_NAME);
         departmentForm.setDeanLastName (DEPARTMENT_SUCCESS_DEAN_LASTNAME);
         // We need some implementation of BindingResult here
-        BindingResult result = new BindException (departmentForm, DEPARTMENT_MODEL_NAME);
-        departmentEditValidator.validate (departmentForm, result);
+        BindingResult result = new BindException(departmentForm, DEPARTMENT_MODEL_NAME);
+        departmentDeleteValidator.validate (departmentForm, result);
         assert (!result.hasErrors());
     }
 
     /**
-     * Test if DepartmentEditValidator fails on not existed id
+     * Test if DepartmentDeleteValidator fails on null id
      */
     @Test
-    public void departmentEditValidatorFailId() {
+    public void departmentDeleteValidatorFailNullId() {
         DepartmentForm departmentForm =  new DepartmentForm();
-        departmentForm.setId (DEPARTMENT_FAIL_ID);
+        departmentForm.setId( DEPARTMENT_NULL_ID);
         departmentForm.setDepartmentName (DEPARTMENT_SUCCESS_NAME);
         departmentForm.setDeanFirstName (DEPARTMENT_SUCCESS_DEAN_NAME);
         departmentForm.setDeanLastName (DEPARTMENT_SUCCESS_DEAN_LASTNAME);
         // We need some implementation of BindingResult here
-        BindingResult result = new BindException (departmentForm, DEPARTMENT_MODEL_NAME);
-        departmentEditValidator.validate (departmentForm, result);
+        BindingResult result = new BindException(departmentForm, DEPARTMENT_MODEL_NAME);
+        departmentDeleteValidator.validate (departmentForm, result);
         assert (result.hasErrors());
     }
 
     /**
-     * Testing if DepartmentEditValidator fails on wrong departmentName
+     * Test if DepartmentDeleteValidator fails on wrong id
      */
     @Test
-    public void departmentEditValidatorFailDepName() {
+    public void departmentDeleteValidatorFailId() {
         DepartmentForm departmentForm =  new DepartmentForm();
-        departmentForm.setId (DEPARTMENT_SUCCESS_ID);
-        departmentForm.setDepartmentName (DEPARTMENT_FAIL_NAME);
+        departmentForm.setId( DEPARTMENT_FAIL_ID);
+        departmentForm.setDepartmentName (DEPARTMENT_SUCCESS_NAME);
         departmentForm.setDeanFirstName (DEPARTMENT_SUCCESS_DEAN_NAME);
         departmentForm.setDeanLastName (DEPARTMENT_SUCCESS_DEAN_LASTNAME);
         // We need some implementation of BindingResult here
-        BindingResult result = new BindException (departmentForm, DEPARTMENT_MODEL_NAME);
-        departmentEditValidator.validate (departmentForm, result);
+        BindingResult result = new BindException(departmentForm, DEPARTMENT_MODEL_NAME);
+        departmentDeleteValidator.validate (departmentForm, result);
         assert (result.hasErrors());
     }
 
     /**
-     * Testing if DepartmentEditValidator fails on wrong dean name
+     * Test if DepartmentDeleteValidator not fails on all empty fields except id
      */
     @Test
-    public void departmentEditValidatorFailDeanName() {
+    public void departmentDeleteValidatorNotFailEmpty() {
         DepartmentForm departmentForm =  new DepartmentForm();
-        departmentForm.setId (DEPARTMENT_SUCCESS_ID);
-        departmentForm.setDepartmentName (DEPARTMENT_SUCCESS_NAME);
-        departmentForm.setDeanFirstName (DEPARTMENT_FAIL_DEAN_NAME);
-        departmentForm.setDeanLastName (DEPARTMENT_SUCCESS_DEAN_LASTNAME);
+        departmentForm.setId( DEPARTMENT_SUCCESS_ID);
+        departmentForm.setDepartmentName (DEPARTMENT_SUCCESS_EMPTY_NAME);
+        departmentForm.setDeanFirstName (DEPARTMENT_SUCCESS_EMPTY_DEAN_NAME);
+        departmentForm.setDeanLastName (DEPARTMENT_SUCCESS_EMPTY_DEAN_LASTNAME);
         // We need some implementation of BindingResult here
-        BindingResult result = new BindException (departmentForm, DEPARTMENT_MODEL_NAME);
-        departmentEditValidator.validate (departmentForm, result);
-        assert (result.hasErrors());
-    }
-
-    /**
-     * Testing if DepartmentEditValidator fails on wrong dean last name
-     */
-    @Test
-    public void departmentEditValidatorFailDeanLastName() {
-        DepartmentForm departmentForm =  new DepartmentForm();
-        departmentForm.setId (DEPARTMENT_SUCCESS_ID);
-        departmentForm.setDepartmentName (DEPARTMENT_SUCCESS_NAME);
-        departmentForm.setDeanFirstName (DEPARTMENT_SUCCESS_DEAN_NAME);
-        departmentForm.setDeanLastName (DEPARTMENT_FAIL_DEAN_NAME);
-        // We need some implementation of BindingResult here
-        BindingResult result = new BindException (departmentForm, DEPARTMENT_MODEL_NAME);
-        departmentEditValidator.validate (departmentForm, result);
-        assert (result.hasErrors());
+        BindingResult result = new BindException(departmentForm, DEPARTMENT_MODEL_NAME);
+        departmentDeleteValidator.validate (departmentForm, result);
+        assert (!result.hasErrors());
     }
 }

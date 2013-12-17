@@ -11,6 +11,13 @@ public class Group implements Serializable{
     private String groupName;
     private Department department;
 
+    public Group() {}
+    public Group (Group group) {
+        this.id = group.getId();
+        this.groupName = group.getGroupName();
+        this.department = group.getDepartment();
+    }
+
     public Long getId() {
         return id;
     }

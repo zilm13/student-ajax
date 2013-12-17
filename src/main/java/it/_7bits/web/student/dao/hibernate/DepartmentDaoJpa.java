@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +35,14 @@ public class DepartmentDaoJpa implements IDepartmentDao {
     @Override
     public List<Department> findAll() throws DaoGeneralException {
         try {
-            return (List<Department>)entityManager.
+            List<DepartmentEntity> entityList = entityManager.
                     createQuery("from " + entityClass.getName(), entityClass)
                     .getResultList();
+            List<Department> pojoList = new ArrayList<Department>();
+            for (DepartmentEntity entity: entityList) {
+                pojoList.add (new Department(entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list all departments via JPA: ", e);
         }
@@ -64,7 +70,12 @@ public class DepartmentDaoJpa implements IDepartmentDao {
                     typedQuery.setParameter (parameter.getKey(), parameter.getValue());
                 }
             }
-            return (List<Department>)(List<?>) typedQuery.getResultList();
+            List<DepartmentEntity> entityList =  typedQuery.getResultList();
+            List<Department> pojoList = new ArrayList<Department>();
+            for (DepartmentEntity entity: entityList) {
+                pojoList.add (new Department(entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list departments with custom query via JPA: ", e);
         }
@@ -82,8 +93,9 @@ public class DepartmentDaoJpa implements IDepartmentDao {
     public Department findById(Long id) throws DaoGeneralException {
         if (id == null) return null;
         try {
-
-            return (Department) entityManager.find(entityClass, id);
+            DepartmentEntity departmentEntity = (DepartmentEntity) entityManager.find(entityClass, id);
+            Department department = new Department (departmentEntity);
+            return department;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot get department by Id via JPA: ", e);
         }

@@ -13,6 +13,16 @@ public class Student implements Serializable {
     private SubDepartment subDepartment;
     private boolean isHead;
 
+    public Student() {}
+
+    public Student (Student student) {
+        this.id = student.getId();
+        this.firstName = student.getFirstName();
+        this.lastName = student.getLastName();
+        this.group = student.getGroup();
+        this.subDepartment = student.getSubDepartment();
+        this.isHead = student.getIsHead();
+    }
 
     public Long getId() {
         return id;

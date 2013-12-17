@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +34,14 @@ public class GroupDaoJpa implements IGroupDao {
     @Override
     public List<Group> findAll() throws DaoGeneralException {
         try {
-            return (List<Group>)entityManager.
+            List<GroupEntity> entityList = entityManager.
                     createQuery("from " + entityClass.getName(), entityClass)
                     .getResultList();
+            List<Group> pojoList = new ArrayList<Group>();
+            for (GroupEntity entity: entityList) {
+                pojoList.add (new Group(entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list all groups via JPA: ", e);
         }
@@ -63,7 +69,12 @@ public class GroupDaoJpa implements IGroupDao {
                     typedQuery.setParameter (parameter.getKey(), parameter.getValue());
                 }
             }
-            return (List<Group>)(List<?>) typedQuery.getResultList();
+            List<GroupEntity> entityList = typedQuery.getResultList();
+            List<Group> pojoList = new ArrayList<Group>();
+            for (GroupEntity entity: entityList) {
+                pojoList.add (new Group(entity));
+            }
+            return pojoList;
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot list groups with custom query via JPA: ", e);
         }
@@ -81,7 +92,8 @@ public class GroupDaoJpa implements IGroupDao {
     public Group findById(Long id) throws DaoGeneralException {
         if (id == null) return null;
         try {
-            return (Group) entityManager.find(entityClass, id);
+            GroupEntity entity = (GroupEntity) entityManager.find(entityClass, id);
+            return new Group(entity);
         } catch (Exception e) {
             throw new DaoGeneralException ("Cannot get group by Id via JPA: ", e);
         }
