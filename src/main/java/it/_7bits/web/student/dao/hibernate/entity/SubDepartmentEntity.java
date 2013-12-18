@@ -71,7 +71,10 @@ public class SubDepartmentEntity extends SubDepartment {
     }
 
     public void setDepartmentEntity(DepartmentEntity departmentEntity) {
-        super.setDepartment (departmentEntity);
+        if (departmentEntity != null) {
+            Department department = new Department (departmentEntity);
+            super.setDepartment (department);
+        }
         this.departmentEntity = departmentEntity;
     }
 }

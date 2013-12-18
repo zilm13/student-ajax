@@ -1,12 +1,13 @@
 package it._7bits.web.student.service.impl;
 
 import it._7bits.web.student.dao.DaoGeneralException;
-import it._7bits.web.student.dao.IDepartmentDao;
+import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.Department;
 import it._7bits.web.student.service.IDepartmentService;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,8 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    @Autowired
-    private IDepartmentDao departmentDao;
+    @Autowired @Qualifier("departmentDao")
+    private IEntityDao departmentDao;
 
     /**
      * List all Departments
@@ -51,7 +52,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
     public Department findDepartmentById (Long id) throws ServiceGeneralException {
         try {
             if (id != null) {
-                return departmentDao.findById(id);
+                return (Department) departmentDao.findById(id);
             } else {
                 LOG.warn ("Cannot find department: Id is null");
                 return null;
@@ -119,13 +120,5 @@ public class DepartmentServiceImpl implements IDepartmentService {
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete Department: ", e);
         }
-    }
-
-    /**
-     * Default setter
-     * @param departmentDao department DAO
-     */
-    public void setDepartmentDao(IDepartmentDao departmentDao) {
-        this.departmentDao = departmentDao;
     }
 }

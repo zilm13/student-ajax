@@ -55,7 +55,7 @@ public class GroupServiceTests {
     }
 
     @Test
-    public void AddDeleteDepartmentTest () throws ServiceGeneralException{
+    public void AddDeleteGroupTest () throws ServiceGeneralException{
         final String UNIQUE_GROUP_NAME = "XXMetahondricalXX";
         final Long DEPARTMENT_ID = 1L;
 

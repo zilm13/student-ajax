@@ -57,7 +57,7 @@ public class StudentServiceTests {
     }
 
     @Test
-    public void AddDeleteDepartmentTest () throws ServiceGeneralException{
+    public void AddDeleteStudentTest () throws ServiceGeneralException{
         final String UNIQUE_STUDENT_NAME = "XXMetahondricalXX";
         final String STUDENT_LASTNAME = "Polovanov";
         final boolean STUDENT_IS_HEAD = false;

@@ -1,12 +1,13 @@
 package it._7bits.web.student.service.impl;
 
 import it._7bits.web.student.dao.DaoGeneralException;
-import it._7bits.web.student.dao.IGroupDao;
+import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.Group;
 import it._7bits.web.student.service.IGroupService;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,8 @@ public class GroupServiceImpl implements IGroupService {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    @Autowired
-    private IGroupDao groupDao;
+    @Autowired @Qualifier("groupDao")
+    private IEntityDao groupDao;
 
     /**
      * List all Groups
@@ -79,7 +80,7 @@ public class GroupServiceImpl implements IGroupService {
     public Group findGroupById(Long id) throws ServiceGeneralException {
         try {
             if (id != null) {
-                return groupDao.findById(id);
+                return (Group) groupDao.findById(id);
             } else {
                 LOG.warn ("Cannot find Group: Id is null");
                 return null;
@@ -147,9 +148,5 @@ public class GroupServiceImpl implements IGroupService {
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete Group: ", e);
         }
-    }
-
-    public void setGroupDao(IGroupDao groupDao) {
-        this.groupDao = groupDao;
     }
 }

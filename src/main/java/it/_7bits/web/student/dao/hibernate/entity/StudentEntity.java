@@ -110,7 +110,10 @@ public class StudentEntity extends Student {
     }
 
     public void setGroupEntity(GroupEntity groupEntity) {
-        super.setGroup (groupEntity);
+        if (groupEntity != null) {
+            Group group = new Group (groupEntity);
+            super.setGroup (group);
+        }
         this.groupEntity = groupEntity;
     }
 
@@ -120,7 +123,10 @@ public class StudentEntity extends Student {
     }
 
     public void setSubDepartmentEntity(SubDepartmentEntity subDepartmentEntity) {
-        super.setSubDepartment (subDepartmentEntity);
+        if (subDepartmentEntity != null){
+            SubDepartment subDepartment = new SubDepartment (subDepartmentEntity);
+            super.setSubDepartment (subDepartment);
+        }
         this.subDepartmentEntity = subDepartmentEntity;
     }
 }

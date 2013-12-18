@@ -1,12 +1,13 @@
 package it._7bits.web.student.service.impl;
 
 import it._7bits.web.student.dao.DaoGeneralException;
-import it._7bits.web.student.dao.ISubDepartmentDao;
+import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.SubDepartment;
 import it._7bits.web.student.service.ISubDepartmentService;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,8 @@ public class SubDepartmentServiceImpl implements ISubDepartmentService {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    @Autowired
-    private ISubDepartmentDao subDepartmentDao;
+    @Autowired @Qualifier("subDepartmentDao")
+    private IEntityDao subDepartmentDao;
 
     /**
      * List all SubDepartments
@@ -80,7 +81,7 @@ public class SubDepartmentServiceImpl implements ISubDepartmentService {
     public SubDepartment findSubDepartmentById(Long id) throws ServiceGeneralException {
         try {
             if (id != null) {
-                return subDepartmentDao.findById (id);
+                return (SubDepartment) subDepartmentDao.findById (id);
             } else {
                 LOG.warn ("Cannot find SubDepartment: Id is null");
                 return null;
@@ -148,13 +149,5 @@ public class SubDepartmentServiceImpl implements ISubDepartmentService {
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete SubDepartment: ", e);
         }
-    }
-
-    /**
-     * Default setter
-     * @param subDepartmentDao SubDepartment DAO
-     */
-    public void setSubDepartmentDao(ISubDepartmentDao subDepartmentDao) {
-        this.subDepartmentDao = subDepartmentDao;
     }
 }

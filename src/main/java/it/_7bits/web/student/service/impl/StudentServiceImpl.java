@@ -1,12 +1,13 @@
 package it._7bits.web.student.service.impl;
 
 import it._7bits.web.student.dao.DaoGeneralException;
-import it._7bits.web.student.dao.IStudentDao;
+import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.Student;
 import it._7bits.web.student.service.IStudentService;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,8 @@ public class StudentServiceImpl implements IStudentService {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    @Autowired
-    private IStudentDao studentDao;
+    @Autowired @Qualifier("studentDao")
+    private IEntityDao studentDao;
 
 
     /**
@@ -137,7 +138,7 @@ public class StudentServiceImpl implements IStudentService {
             throws ServiceGeneralException {
         try {
             if (id != null) {
-                return studentDao.findById(id);
+                return (Student) studentDao.findById(id);
             } else {
                 LOG.warn ("Cannot find Student: Id is null");
                 return null;
@@ -205,13 +206,5 @@ public class StudentServiceImpl implements IStudentService {
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete Student: ", e);
         }
-    }
-
-    /**
-     * Default setter
-     * @param studentDao IGenericStudentDao instance
-     */
-    public void setStudentDao(IStudentDao studentDao) {
-        this.studentDao = studentDao;
     }
 }
