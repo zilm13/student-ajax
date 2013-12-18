@@ -19,6 +19,8 @@
             </li>
             <li class="center">
                 <form:input path="id" type="hidden" />
+                <form:input path="subDepartmentName" type="hidden" />
+                <form:input path="department" value="${subDepartmentForm.department.id}" type="hidden" />
                 <input id="cancelForm" type="button" name="cancel" value="<fmt:message key='subdepartment.delete.form.cancel'/>" onclick="location.href='${cookah.returnPath}';"  />
                 <input id="saveForm" type="submit" name="submit" value="<fmt:message key='subdepartment.delete.form.ok'/>" />
                 <p>&nbsp;<form:errors path="id"/></p>

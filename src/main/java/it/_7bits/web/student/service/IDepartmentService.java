@@ -42,6 +42,8 @@ public interface IDepartmentService {
      * Removing department
      * @param department    Department instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
-    public void deleteDepartment (final Department department) throws ServiceGeneralException;
+    public void deleteDepartment (final Department department)
+            throws ServiceGeneralException, ServiceConstraintViolationException;
 }

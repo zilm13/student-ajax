@@ -1,5 +1,6 @@
 package it._7bits.web.student.service.impl;
 
+import it._7bits.web.student.dao.DaoConstraintViolationException;
 import it._7bits.web.student.dao.DaoGeneralException;
 import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.Student;
@@ -204,6 +205,9 @@ public class StudentServiceImpl implements IStudentService {
                 LOG.warn ("Cannot delete Student, object is null or id is not set");
             }
         } catch (DaoGeneralException e) {
+            throw new ServiceGeneralException ("Service cannot delete Student: ", e);
+        } catch (DaoConstraintViolationException e) {
+            // Student deletion cannot violate constraints
             throw new ServiceGeneralException ("Service cannot delete Student: ", e);
         }
     }

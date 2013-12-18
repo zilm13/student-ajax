@@ -5,16 +5,10 @@ import it._7bits.web.student.config.DefaultValuesConfig;
 import it._7bits.web.student.config.HibernateJpaConfig;
 import it._7bits.web.student.config.ServiceConfig;
 import it._7bits.web.student.domain.Department;
-import it._7bits.web.student.service.IDepartmentService;
-import it._7bits.web.student.service.ServiceGeneralException;
-import junit.framework.Assert;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -57,7 +51,7 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    public void AddDeleteDepartmentTest () throws ServiceGeneralException{
+    public void AddDeleteDepartmentTest () throws Exception{
         final String UNIQUE_DEPARTMENT_NAME = "XXMetahondricalXX";
         final String DEAN_NAME = "Ivan";
         final String DEAN_LASTNAME = "Poluvanov";

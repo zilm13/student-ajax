@@ -1,8 +1,10 @@
 package it._7bits.web.student.dao.hibernate;
 
+import it._7bits.web.student.dao.DaoConstraintViolationException;
 import it._7bits.web.student.dao.DaoGeneralException;
 import it._7bits.web.student.dao.IEntityDao;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -155,7 +157,7 @@ public class EntityDaoJpa<Entity extends Pojo,Pojo> implements IEntityDao<Entity
      * @throws DaoGeneralException if smth goes wrong with DB
      */
     @Override
-    public void remove (Pojo pojo) throws DaoGeneralException {
+    public void remove (Pojo pojo) throws DaoGeneralException, DaoConstraintViolationException {
         try {
             Entity entity = pojoToEntity (pojo);
             if (entity !=  null) {
@@ -165,7 +167,16 @@ public class EntityDaoJpa<Entity extends Pojo,Pojo> implements IEntityDao<Entity
                     entityManager.remove (entityManager.merge (entity));
                 }
             }
+            entityManager.flush();
         } catch (Exception e) {
+            Throwable ex = e;
+            while (ex.getCause() != null) {
+                if (ex.getClass().equals(ConstraintViolationException.class)) {
+                    throw new DaoConstraintViolationException ("Constraint violation while deleting entity (" +
+                    entityName + ")via JPA: ", e);
+                }
+                ex = ex.getCause();
+            }
             throw new DaoGeneralException ("Cannot delete entity (" +
                     entityName + ") via JPA: ", e);
         }

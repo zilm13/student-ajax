@@ -56,7 +56,7 @@ public class SubDepartmentServiceTests {
     }
 
     @Test
-    public void AddDeleteSubDepartmentTest () throws ServiceGeneralException{
+    public void AddDeleteSubDepartmentTest () throws Exception{
         final String UNIQUE_SUBDEPARTMENT_NAME = "XXMetahondricalXX";
         final Long DEPARTMENT_ID = 1L;
 

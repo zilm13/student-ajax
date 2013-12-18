@@ -70,7 +70,9 @@ public interface IStudentService {
      * Removing student
      * @param student    Student instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
-    public void deleteStudent (final Student student) throws ServiceGeneralException;
+    public void deleteStudent (final Student student)
+            throws ServiceGeneralException;
 }
 

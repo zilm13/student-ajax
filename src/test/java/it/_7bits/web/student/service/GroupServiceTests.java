@@ -6,7 +6,6 @@ import it._7bits.web.student.config.HibernateJpaConfig;
 import it._7bits.web.student.config.ServiceConfig;
 import it._7bits.web.student.domain.Department;
 import it._7bits.web.student.domain.Group;
-import it._7bits.web.student.domain.SubDepartment;
 import junit.framework.Assert;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.Test;
@@ -55,7 +54,7 @@ public class GroupServiceTests {
     }
 
     @Test
-    public void AddDeleteGroupTest () throws ServiceGeneralException{
+    public void AddDeleteGroupTest () throws Exception {
         final String UNIQUE_GROUP_NAME = "XXMetahondricalXX";
         final Long DEPARTMENT_ID = 1L;
 

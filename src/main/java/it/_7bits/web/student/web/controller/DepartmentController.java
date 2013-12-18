@@ -4,6 +4,7 @@ import it._7bits.web.student.domain.Cookah;
 import it._7bits.web.student.domain.Department;
 import it._7bits.web.student.service.IDefaultValuesService;
 import it._7bits.web.student.service.IDepartmentService;
+import it._7bits.web.student.service.ServiceConstraintViolationException;
 import it._7bits.web.student.service.ServiceGeneralException;
 import it._7bits.web.student.web.form.DepartmentForm;
 import it._7bits.web.student.web.validator.DepartmentDeleteValidator;
@@ -268,6 +269,12 @@ public class DepartmentController {
         } catch (ServiceGeneralException e) {
             LOG.warn ("Deleting department fails because of service exceptiun");
             String redMessage = messageSource.getMessage ("department.delete.failmessage",
+                    new Object[] {departmentForm.getDepartmentName(),
+                            departmentForm.getDeanFirstName(),
+                            departmentForm.getDeanLastName()}, null);
+            cookah.setRedMessage (redMessage);
+        } catch (ServiceConstraintViolationException e) {
+            String redMessage = messageSource.getMessage ("department.delete.constraintfailmessage",
                     new Object[] {departmentForm.getDepartmentName(),
                             departmentForm.getDeanFirstName(),
                             departmentForm.getDeanLastName()}, null);

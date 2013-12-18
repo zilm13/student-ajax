@@ -19,6 +19,8 @@
             </li>
             <li class="center">
                 <form:input path="id" type="hidden" />
+                <form:input path="groupName" type="hidden" />
+                <form:input path="department" value="${groupForm.department.id}" type="hidden" />
                 <input id="cancelForm" type="button" name="cancel" value="<fmt:message key='group.delete.form.cancel'/>" onclick="location.href='${cookah.returnPath}';"  />
                 <input id="saveForm" type="submit" name="submit" value="<fmt:message key='group.delete.form.ok'/>" />
                 <p>&nbsp;<form:errors path="id"/></p>

@@ -1,9 +1,11 @@
 package it._7bits.web.student.service.impl;
 
+import it._7bits.web.student.dao.DaoConstraintViolationException;
 import it._7bits.web.student.dao.DaoGeneralException;
 import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.Group;
 import it._7bits.web.student.service.IGroupService;
+import it._7bits.web.student.service.ServiceConstraintViolationException;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,10 +137,12 @@ public class GroupServiceImpl implements IGroupService {
      *
      * @param group Group instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
     @Override
-    @Transactional
-    public void deleteGroup(Group group) throws ServiceGeneralException {
+    @Transactional(rollbackFor = Throwable.class)
+    public void deleteGroup(Group group) throws ServiceGeneralException,
+            ServiceConstraintViolationException {
         try {
             if (group != null && group.getId() != null) {
                 groupDao.remove (group);
@@ -147,6 +151,9 @@ public class GroupServiceImpl implements IGroupService {
             }
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete Group: ", e);
+        } catch (DaoConstraintViolationException e) {
+            throw new ServiceConstraintViolationException
+                    ("Cannot delete group because of constraint violation", e);
         }
     }
 }

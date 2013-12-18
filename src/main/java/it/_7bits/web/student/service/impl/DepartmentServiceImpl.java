@@ -1,14 +1,17 @@
 package it._7bits.web.student.service.impl;
 
+import it._7bits.web.student.dao.DaoConstraintViolationException;
 import it._7bits.web.student.dao.DaoGeneralException;
 import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.Department;
 import it._7bits.web.student.service.IDepartmentService;
+import it._7bits.web.student.service.ServiceConstraintViolationException;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -107,10 +110,12 @@ public class DepartmentServiceImpl implements IDepartmentService {
      *
      * @param department Department instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
     @Override
-    @Transactional
-    public void deleteDepartment(Department department) throws ServiceGeneralException {
+    @Transactional(rollbackFor = Throwable.class)
+    public void deleteDepartment(Department department)
+            throws ServiceGeneralException, ServiceConstraintViolationException {
         try {
             if (department != null && department.getId() != null) {
                 departmentDao.remove(department);
@@ -119,6 +124,9 @@ public class DepartmentServiceImpl implements IDepartmentService {
             }
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete Department: ", e);
+        } catch (DaoConstraintViolationException e) {
+            throw new ServiceConstraintViolationException
+                    ("Service cannot delete Department because of constraint violation: ", e);
         }
     }
 }

@@ -55,8 +55,9 @@ public interface IEntityDao<Entity,Pojo> {
      * and then remove it from Source
      * @param pojo    Pojo object
      * @throws DaoGeneralException if smth goes wrong with Source
+     * @throws DaoConstraintViolationException when constraint violation occurs
      */
-    public void remove (final Pojo pojo) throws DaoGeneralException;
+    public void remove (final Pojo pojo) throws DaoGeneralException, DaoConstraintViolationException;
 
 
     /**

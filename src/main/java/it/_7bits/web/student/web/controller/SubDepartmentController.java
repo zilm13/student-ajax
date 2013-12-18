@@ -2,10 +2,7 @@ package it._7bits.web.student.web.controller;
 
 import it._7bits.web.student.domain.Cookah;
 import it._7bits.web.student.domain.SubDepartment;
-import it._7bits.web.student.service.IDefaultValuesService;
-import it._7bits.web.student.service.IDepartmentService;
-import it._7bits.web.student.service.ISubDepartmentService;
-import it._7bits.web.student.service.ServiceGeneralException;
+import it._7bits.web.student.service.*;
 import it._7bits.web.student.web.form.GroupForm;
 import it._7bits.web.student.web.form.SubDepartmentForm;
 import it._7bits.web.student.web.validator.SubDepartmentDeleteValidator;
@@ -331,6 +328,11 @@ public class SubDepartmentController {
             cookah.setRedMessage(redMessage);
         } catch (ServiceGeneralException e) {
             String redMessage = messageSource.getMessage ("subdepartment.delete.failmessage",
+                    new Object[] {subDepartmentForm.getSubDepartmentName(),
+                            subDepartmentForm.getDepartment().getDepartmentName()}, null);
+            cookah.setRedMessage(redMessage);
+        } catch (ServiceConstraintViolationException e) {
+            String redMessage = messageSource.getMessage ("subdepartment.delete.constraintfailmessage",
                     new Object[] {subDepartmentForm.getSubDepartmentName(),
                             subDepartmentForm.getDepartment().getDepartmentName()}, null);
             cookah.setRedMessage(redMessage);

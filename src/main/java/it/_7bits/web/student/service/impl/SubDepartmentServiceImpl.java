@@ -1,9 +1,11 @@
 package it._7bits.web.student.service.impl;
 
+import it._7bits.web.student.dao.DaoConstraintViolationException;
 import it._7bits.web.student.dao.DaoGeneralException;
 import it._7bits.web.student.dao.IEntityDao;
 import it._7bits.web.student.domain.SubDepartment;
 import it._7bits.web.student.service.ISubDepartmentService;
+import it._7bits.web.student.service.ServiceConstraintViolationException;
 import it._7bits.web.student.service.ServiceGeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,10 +138,12 @@ public class SubDepartmentServiceImpl implements ISubDepartmentService {
      *
      * @param subDepartment SubDepartment instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
     @Override
-    @Transactional
-    public void deleteSubDepartment(SubDepartment subDepartment) throws ServiceGeneralException {
+    @Transactional(rollbackFor = Throwable.class)
+    public void deleteSubDepartment(SubDepartment subDepartment) throws ServiceGeneralException,
+            ServiceConstraintViolationException {
         try {
             if (subDepartment != null && subDepartment.getId() != null) {
                 subDepartmentDao.remove(subDepartment);
@@ -148,6 +152,9 @@ public class SubDepartmentServiceImpl implements ISubDepartmentService {
             }
         } catch (DaoGeneralException e) {
             throw new ServiceGeneralException ("Service cannot delete SubDepartment: ", e);
+        } catch (DaoConstraintViolationException e) {
+            throw new ServiceConstraintViolationException
+                    ("Service cannot delete SubDepartment because of constraint violation: ", e);
         }
     }
 }

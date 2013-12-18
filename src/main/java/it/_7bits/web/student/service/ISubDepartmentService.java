@@ -55,7 +55,8 @@ public interface ISubDepartmentService {
      * Removing subDepartment
      * @param subDepartment    SubDepartment instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
     public void deleteSubDepartment (final SubDepartment subDepartment)
-            throws ServiceGeneralException;
+            throws ServiceGeneralException, ServiceConstraintViolationException;
 }

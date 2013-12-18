@@ -2,10 +2,7 @@ package it._7bits.web.student.web.controller;
 
 import it._7bits.web.student.domain.Cookah;
 import it._7bits.web.student.domain.Group;
-import it._7bits.web.student.service.IDefaultValuesService;
-import it._7bits.web.student.service.IDepartmentService;
-import it._7bits.web.student.service.IGroupService;
-import it._7bits.web.student.service.ServiceGeneralException;
+import it._7bits.web.student.service.*;
 import it._7bits.web.student.web.form.GroupForm;
 import it._7bits.web.student.web.validator.GroupDeleteValidator;
 import it._7bits.web.student.web.validator.GroupEditValidator;
@@ -319,7 +316,7 @@ public class GroupController {
         try {
             Group groupDelete = groupService.findGroupById (groupId);
             groupService.deleteGroup (groupDelete);
-            LOG.info("Deleting department does not have errors");
+            LOG.info("Deleting group does not have errors");
             String redMessage = messageSource.getMessage ("group.delete.redmessage",
                     new Object[] {groupDelete.getGroupName(),
                             groupDelete.getDepartment().getDepartmentName()}, null);
@@ -327,6 +324,11 @@ public class GroupController {
         } catch (ServiceGeneralException e) {
             LOG.warn ("Deleting group fails because of service exceptiun");
             String redMessage = messageSource.getMessage ("group.delete.failmessage",
+                    new Object[] {groupForm.getGroupName(),
+                            groupForm.getDepartment().getDepartmentName()}, null);
+            cookah.setRedMessage (redMessage);
+        } catch (ServiceConstraintViolationException e) {
+            String redMessage = messageSource.getMessage ("group.delete.constraintfailmessage",
                     new Object[] {groupForm.getGroupName(),
                             groupForm.getDepartment().getDepartmentName()}, null);
             cookah.setRedMessage (redMessage);

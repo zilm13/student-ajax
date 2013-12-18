@@ -51,7 +51,9 @@ public interface IGroupService {
      * Removing group
      * @param group    Group instance
      * @throws ServiceGeneralException if error occurs while obtaining information
+     * @throws ServiceConstraintViolationException if constraint violation occurs
      */
-    public void deleteGroup (final Group group) throws ServiceGeneralException;
+    public void deleteGroup (final Group group)
+            throws ServiceGeneralException, ServiceConstraintViolationException;
 }
 

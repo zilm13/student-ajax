@@ -20,6 +20,11 @@
             </li>
             <li class="center">
                 <form:input path="id" type="hidden" />
+                <form:input path="firstName" type="hidden" />
+                <form:input path="lastName" type="hidden" />
+                <form:input path="group" type="hidden" />
+                <form:input path="subDepartment" type="hidden" />
+                <form:input path="isHead" type="hidden" />
                 <input id="cancelForm" type="button" name="cancel" value="<fmt:message key='student.delete.form.cancel'/>" onclick="location.href='${cookah.returnPath}';"  />
                 <input id="saveForm" type="submit" name="submit" value="<fmt:message key='student.delete.form.ok'/>" />
                 <p>&nbsp;<form:errors path="id"/></p>
